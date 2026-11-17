@@ -1,0 +1,27 @@
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# env
+.env
+.env.*
+!.env.example
+
+# Go
+apps/api/bin/
+apps/api/api
+apps/api/tmp/
+
+# Node (root workspace)
+node_modules/
+
+# Turborepo
+.turbo/
+*.exe
+*.test
+*.out
+
+# Claude local
+.claude/scratch/
+.claude/worktrees/

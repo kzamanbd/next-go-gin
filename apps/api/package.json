@@ -1,0 +1,14 @@
+{
+  "name": "@next-go-gin/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Go (Gin) API. Scripts wrap the Go toolchain so Turborepo can run it.",
+  "scripts": {
+    "dev": "go run .",
+    "build": "go build -o bin/api .",
+    "start": "./bin/api",
+    "lint": "go vet ./...",
+    "check-types": "go build -o /dev/null ./...",
+    "test": "go test ./..."
+  }
+}
