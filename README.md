@@ -76,11 +76,25 @@ Both apps deploy to Vercel as two projects connected to this repo:
 | `next-go-gin`     | `apps/web`     | Next.js   | default (`turbo run build`)                                        | https://next-go-gin.vercel.app      |
 | `next-go-gin-api` | `apps/api`     | Go        | `go build -trimpath -ldflags="-s -w" -o bin/api .` / `go mod download` | https://next-go-gin-api.vercel.app |
 
-- The web project has `API_URL=https://next-go-gin-api.vercel.app`. It is read
-  at build time, so redeploy web after changing it.
+**Production only.** Both projects deploy to production from `main` and nothing
+else:
+
+- Production branch: `main` on both projects.
+- Preview deployments: disabled on both projects, so pushes to other branches
+  and pull requests do not deploy.
+- Environment variables: production only. Use `localhost` defaults for local
+  development (see [Configuration](#configuration)).
+
+**Other settings:**
+
+- The web project has `API_URL=https://next-go-gin-api.vercel.app` (production).
+  It is read at build time, so redeploy web after changing it.
 - The API project sets explicit Go commands because Vercel otherwise detects
   Turborepo and switches the build to `turbo run build`.
 - Both projects skip builds when a push doesn't affect them.
+
+To ship, merge or push to `main`. To redeploy without a new commit, use
+**Redeploy** on the latest production deployment in the Vercel dashboard.
 
 **api** also runs on any container host (Fly.io, Railway, Render, ECS, …) using
 `apps/api/Dockerfile`:
