@@ -69,11 +69,20 @@ docker compose down
 
 ## Deployment
 
-**web** → Vercel. Set the project's Root Directory to `apps/web` (Vercel then
-builds only the web app via Turborepo) and set `API_URL` to the deployed API's
-URL. `API_URL` is read at build time, so redeploy after changing it.
+Both apps deploy to Vercel as two projects connected to this repo:
 
-**api** → any container host (Fly.io, Railway, Render, ECS, …) using
+| Project           | Root Directory | Framework | Build / install command                                            | URL                                 |
+| ----------------- | -------------- | --------- | ------------------------------------------------------------------ | ----------------------------------- |
+| `next-go-gin`     | `apps/web`     | Next.js   | default (`turbo run build`)                                        | https://next-go-gin.vercel.app      |
+| `next-go-gin-api` | `apps/api`     | Go        | `go build -trimpath -ldflags="-s -w" -o bin/api .` / `go mod download` | https://next-go-gin-api.vercel.app |
+
+- The web project has `API_URL=https://next-go-gin-api.vercel.app`. It is read
+  at build time, so redeploy web after changing it.
+- The API project sets explicit Go commands because Vercel otherwise detects
+  Turborepo and switches the build to `turbo run build`.
+- Both projects skip builds when a push doesn't affect them.
+
+**api** also runs on any container host (Fly.io, Railway, Render, ECS, …) using
 `apps/api/Dockerfile`:
 
 ```bash
