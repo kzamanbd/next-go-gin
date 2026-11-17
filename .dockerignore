@@ -1,0 +1,11 @@
+**/node_modules
+**/.next
+**/.turbo
+**/bin
+apps/api/api
+.git
+.claude
+.env
+.env.*
+**/.env
+**/.env.*

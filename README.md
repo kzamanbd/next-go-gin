@@ -53,6 +53,38 @@ needed in development.
 
 Add `--filter=@next-go-gin/<app>` to scope any task to one app.
 
+## Docker Compose
+
+Run both apps as production containers:
+
+```bash
+docker compose up --build    # web :3000, api :8080
+docker compose down
+```
+
+- `api` builds from `apps/api/Dockerfile`.
+- `web` builds from `apps/web/Dockerfile` using the repo root as context
+  (`turbo prune` + Next.js `standalone` output). Its `/api/*` proxy points at
+  `http://api:8080` (the compose service name), set via the `API_URL` build arg.
+
+## Deployment
+
+**web** → Vercel. Set the project's Root Directory to `apps/web` (Vercel then
+builds only the web app via Turborepo) and set `API_URL` to the deployed API's
+URL. `API_URL` is read at build time, so redeploy after changing it.
+
+**api** → any container host (Fly.io, Railway, Render, ECS, …) using
+`apps/api/Dockerfile`:
+
+```bash
+docker build -t next-go-gin-api apps/api
+docker run --rm -p 8080:8080 next-go-gin-api
+curl localhost:8080/api/health
+```
+
+The image is a static binary on distroless (~16 MB), runs as non-root, and uses
+`GIN_MODE=release`. It honours `PORT`, which most hosts set for you.
+
 ## Configuration
 
 | Variable  | App      | Default                 | Purpose                           |

@@ -1,0 +1,11 @@
+bin/
+api
+tmp/
+node_modules/
+.turbo/
+.env
+.env.*
+Dockerfile
+.dockerignore
+package.json
+*.md
